@@ -5,14 +5,12 @@
 #include <chrono>
 #include <stdlib.h>
 #include <string>
+#include <fstream>
+
 using namespace std;
 #define DEFAULT_COLOR "\033[0m"
-#define GREEN_COLOR "\033[32m"
-#define RED_COLOR "\033[31m"
 #define YELLOW_COLOR "\033[33m"
-#define CYAN_COLOR "\033[36m"
-#define FUCKER_SIZE 10
-#define N 5
+#define FILENAME "/home/dan/CLionProjects/ex3/config.txt"
 
 vector<BoundedQueue*> bq_arr;
 UnboundedQueue* nubq = new UnboundedQueue();
@@ -78,14 +76,14 @@ void consume(const string& x){
 }
 
 
-void dispatch(){
+void dispatch(int n){
     string str;
     int counter = 0;
     int i;
-    while(counter != N){
+    while(counter != n){
         i = 0;
         counter = 0;
-        while(i < N) {
+        while(i < n) {
             str = bq_arr[i]->dequeue();
             if(str != "-1"){
                 consume(str);
@@ -138,27 +136,55 @@ void manage(){
     cout << YELLOW_COLOR << "BIG BALLS DANNY thread is done"  << endl << DEFAULT_COLOR;
 }
 
-int main() {
-    thread threads_arr[N];
-    int size_arr[] = {3,4,3,4,3};
-    int num_products[] = {5, 10, 5, 6, 7};
-    big_fucker_queue = new BoundedQueue(FUCKER_SIZE);
-
-    for(int i = 0; i < N; i++){
-        bq_arr.push_back(new BoundedQueue(size_arr[i]));
+int getData(vector<int> &sizes, vector<int> &num_products, int &fucker_size){
+    int flag = 0;
+    int num_of_prod = 0;
+    string line, temp;
+    ifstream file(FILENAME);
+    if (file.is_open()) { // line.c_str()
+        while (flag != 1){
+            getline(file, line);    // read prod number OR Co-Editor queue size.
+            temp = line;
+            if(!getline(file, line))    // read num of products.
+                flag = 1;
+            else{
+                num_products.push_back(stoi(line));
+                getline(file, line);    // read queue size.
+                sizes.push_back(stoi(line));
+                getline(file, line);  // read empty new line
+                num_of_prod++;
+            }
+        }
+        file.close();
     }
-    for(int i = 0; i < N; i++){
+    fucker_size = stoi(temp);
+    return num_of_prod;
+}
+
+int main() {
+
+    int fucker_size;
+    vector<int> sizes;
+    vector<int> num_products;
+    int n = getData(sizes, num_products, fucker_size);
+    thread threads_arr[n];
+    big_fucker_queue = new BoundedQueue(fucker_size);
+
+    for(int i = 0; i < n; i++){
+        bq_arr.push_back(new BoundedQueue(sizes[i]));
+    }
+    for(int i = 0; i < n; i++){
         threads_arr[i] = thread(produce, i, num_products[i]);
     }
 
-    thread dispatcher(dispatch);
+    thread dispatcher(dispatch, n);
     thread news_co_editor(co_edition, nubq);
     thread sport_co_editor(co_edition, subq);
     thread weather_co_editor(co_edition, wubq);
     thread screen_manager(manage);
 
 
-    for(int i = 0; i < N; i++){
+    for(int i = 0; i < n; i++){
         threads_arr[i].join();
     }
 
@@ -172,42 +198,3 @@ int main() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-//void dispatch1(){
-//    string x1, x2;
-//    int flag1 = 0;
-//    int flag2 = 0;
-//    while(flag1 == 0 ||  flag2 == 0){
-//        this_thread::sleep_for(chrono::milliseconds(1000));
-//        if(flag1 == 0){
-//            x1 = bq1->dequeue();
-//            if(x1 == "-1"){
-//                flag1 = 1;
-//            }
-//            else {
-//                consume(x1);
-//            }
-//        }
-//        if(flag2 == 0){
-//            x2 = bq2->dequeue();
-//            if(x2 == "-1"){
-//                flag2 = 1;
-//            }
-//            else{
-//                consume(x2);
-//            }
-//        }
-//    }
-//    consume(to_string(-1));
-//    cout << YELLOW_COLOR << "Dispatcher thread is done"  << endl << DEFAULT_COLOR;
-//}
