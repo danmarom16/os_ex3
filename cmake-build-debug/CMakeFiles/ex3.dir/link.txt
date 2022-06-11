@@ -1,0 +1,1 @@
+/usr/bin/c++ -pthread -g CMakeFiles/ex3.dir/main.cpp.o CMakeFiles/ex3.dir/BoundedQueue.cpp.o CMakeFiles/ex3.dir/UnboundedQueue.cpp.o CMakeFiles/ex3.dir/Semaphore.cpp.o -o ex3 

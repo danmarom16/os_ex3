@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/dan/CLionProjects/ex3/BoundedQueue.h
+string
+/home/dan/CLionProjects/ex3/string
+queue
+/home/dan/CLionProjects/ex3/queue
+Semaphore.h
+/home/dan/CLionProjects/ex3/Semaphore.h
+
+/home/dan/CLionProjects/ex3/Semaphore.h
+mutex
+/home/dan/CLionProjects/ex3/mutex
+semaphore.h
+/home/dan/CLionProjects/ex3/semaphore.h
+
+/home/dan/CLionProjects/ex3/UnboundedQueue.h
+string
+/home/dan/CLionProjects/ex3/string
+queue
+/home/dan/CLionProjects/ex3/queue
+Semaphore.h
+/home/dan/CLionProjects/ex3/Semaphore.h
+
+/home/dan/CLionProjects/ex3/main.cpp
+iostream
+-
+BoundedQueue.h
+/home/dan/CLionProjects/ex3/BoundedQueue.h
+UnboundedQueue.h
+/home/dan/CLionProjects/ex3/UnboundedQueue.h
+thread
+-
+chrono
+-
+stdlib.h
+-
+string
+-
+
